@@ -1,0 +1,42 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+#contact-us {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-us-text {
+  flex: 1;
+}
+
+.contact-us-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  gap: 24px;
+}
+
+.contact-us-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px
+}
+
+.contact-us-form-field > input {
+  /* border-radius: 16px; */
+}
+
+
+@media (min-width: 768px) {
+  #contact-us {
+    display: flex;
+    flex-direction: row;
+    gap: 64px;
+  }
+}
+
