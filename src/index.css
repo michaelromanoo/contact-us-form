@@ -1,4 +1,5 @@
 /* CSS Reset */
+/* TODO: find a better CSS reset file */
 /* Box sizing rules */
 *,
 *::before,
@@ -18,6 +19,10 @@ blockquote,
 dl,
 dd {
   margin-block-end: 0;
+}
+
+input, textarea {
+  border: 0;
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */

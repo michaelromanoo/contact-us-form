@@ -1,21 +1,29 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./App.css";
 
-type FormData = {
+interface IFormData {
   name: string;
   email: string;
   message: string;
-};
+}
 
-function App() {
+// isValid => set to true, if form doesnt have any errors
+// isDirty => set to true, after the user modifies any of the inputs
+// TODO: make an error component to display messages
+
+const App = () => {
   const {
     register,
-    formState: { errors },
+    formState: { errors, isValid },
     handleSubmit,
-  } = useForm<FormData>();
-  const onSubmit: SubmitHandler<FormData> = (data) => {
+  } = useForm<IFormData>({ mode: "onChange" });
+
+  const onSubmit: SubmitHandler<IFormData> = async (data) => {
     console.log("form values", data);
   };
+
+  console.log("errors", errors);
+
   return (
     <section id="contact-us">
       <div className="contact-us-heading">
@@ -30,38 +38,49 @@ function App() {
           <div className="contact-us-form-field">
             <label>Name</label>
             <input
-              {...register("name")}
+              {...register("name", { required: true })}
               type="text"
               name="name"
+              id={errors.name && "error-input"}
               placeholder="Enter your name..."
             />
+            {errors.name?.type === "required" && (
+              <p id="error">Name is required</p>
+            )}
           </div>
           <div className="contact-us-form-field">
             <label>Email</label>
             <input
               {...register("email", { required: true })}
+              id={errors.email && "error-input"}
               type="email"
               name="email"
               placeholder="Enter your email..."
             />
             {errors.email?.type === "required" && (
-              <p role="alert">First name is required</p>
+              <p id="error">Email is required</p>
             )}
           </div>
           <div className="contact-us-form-field">
             <label>Message</label>
             <textarea
-              {...register("message")}
+              {...register("message", { required: true })}
+              id={errors.message && "error-input"}
               placeholder="Type your message here.."
               rows={4}
               cols={30}
             />
+            {errors.message?.type === "required" && (
+              <p id="error">Message is required</p>
+            )}
           </div>
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" disabled={!isValid}>
+          Submit
+        </button>
       </form>
     </section>
   );
-}
+};
 
 export default App;

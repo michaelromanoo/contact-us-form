@@ -38,6 +38,15 @@
   border-radius: 8px;
 }
 
+#error-input {
+  border: 2px solid red;
+}
+
+#error {
+  margin: 0;
+  color: red;
+}
+
 
 @media (min-width: 768px) {
   #contact-us {
