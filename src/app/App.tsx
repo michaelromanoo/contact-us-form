@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./App.css";
+import { useState } from "react";
 
 interface IFormData {
   name: string;
@@ -12,6 +13,9 @@ interface IFormData {
 // TODO: make an error component to display messages
 
 const App = () => {
+  const [emailSuccess, setEmailSuccess] = useState<
+    "not sent" | "error" | "success"
+  >("not sent");
   const {
     register,
     formState: { errors, isValid },
@@ -20,6 +24,24 @@ const App = () => {
 
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
     console.log("form values", data);
+
+    await fetch("http://localhost:3000/send", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ data }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          setEmailSuccess("error");
+          throw new Error(`HTTP error! Status ${res.status}`);
+        }
+        console.log("status", res.status);
+        setEmailSuccess("success");
+        res.json();
+      })
+      .then((data) => console.log("data", data));
   };
 
   console.log("errors", errors);
@@ -78,6 +100,10 @@ const App = () => {
         <button type="submit" disabled={!isValid}>
           Submit
         </button>
+        {emailSuccess === "success" && <p>Email Sent!</p>}
+        {emailSuccess === "error" && (
+          <p>There is an error. Please try again!</p>
+        )}
       </form>
     </section>
   );
